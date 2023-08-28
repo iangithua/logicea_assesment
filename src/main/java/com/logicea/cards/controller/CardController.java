@@ -27,9 +27,16 @@ public class CardController {
         return new ResponseEntity<>(card, HttpStatus.OK);
     }
 
+    //Admin Only
     @GetMapping
     public ResponseEntity<List<Card>> getAllCards() {
         List<Card> cards = cardService.getAllCards();
+        return new ResponseEntity<>(cards, HttpStatus.OK);
+    }
+
+    @GetMapping("/my-cards")
+    public ResponseEntity<List<Card>> getAllMyCards() {
+        List<Card> cards = cardService.getAllMyCards();
         return new ResponseEntity<>(cards, HttpStatus.OK);
     }
 

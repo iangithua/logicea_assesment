@@ -4,7 +4,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity
+@Entity(name = "Card")
 @EntityListeners(AuditingEntityListener.class)
 public class Card extends Audit<String> {
     @Id

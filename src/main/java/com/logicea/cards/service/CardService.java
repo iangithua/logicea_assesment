@@ -1,9 +1,12 @@
 package com.logicea.cards.service;
 
+import com.logicea.cards.auditor.SpringSecurityAuditorAware;
 import com.logicea.cards.entity.Card;
 import com.logicea.cards.jwt.JwtAuthorizationFilter;
 import com.logicea.cards.repository.CardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CurrencyEditor;
+import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +17,12 @@ public class CardService {
     @Autowired
     private CardRepository cardRepository;
 
+    private final AuditorAware<String> currentEditor;
 
+    @Autowired
+    public CardService(AuditorAware<String> currentEditor) {
+        this.currentEditor = currentEditor;
+    }
     public Card createCard(Card card) {
         // Additional validation and business logic can be added here
 
@@ -22,14 +30,18 @@ public class CardService {
     }
 
     public Card getCardById(Long cardId) {
-        Optional<Card> optionalCard = cardRepository.findById(cardId);
-        return optionalCard.orElse(null);
+        System.out.println("currentEditor "+currentEditor.getCurrentAuditor().get());
+        Card optionalCard = cardRepository.findByIdAndCreatedBy(cardId,"iangithua@gmail.com");
+        return optionalCard;
     }
 
     public List<Card> getAllCards() {
         return cardRepository.findAll();
     }
 
+    public List<Card> getAllMyCards()  {
+        return cardRepository.findAllMyCards("iangithua@gmail.com");
+    }
     public Card updateCard(Long cardId, Card card) {
         Optional<Card> optionalCard = cardRepository.findById(cardId);
         if (optionalCard.isPresent()) {
@@ -47,5 +59,7 @@ public class CardService {
     public void deleteCard(Long cardId) {
         cardRepository.deleteById(cardId);
     }
+
+
 }
 
