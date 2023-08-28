@@ -1,9 +1,12 @@
 package com.logicea.cards.entity;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-public class Card {
+@EntityListeners(AuditingEntityListener.class)
+public class Card extends Audit<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,23 +26,23 @@ public class Card {
     @Column(nullable = false, updatable = false)
     private Date creationDate = new Date();
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+//    @ManyToOne
+//    @JoinColumn(name = "user_id", nullable = false)
+//    private User user;
 
     // Constructors, getters, setters, etc.
 
     public Card() {
     }
 
-    public Card(Long id, String name, String description, String color, CardStatus status, Date creationDate, User user) {
+    public Card(Long id, String name, String description, String color, CardStatus status, Date creationDate) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.color = color;
         this.status = status;
         this.creationDate = creationDate;
-        this.user = user;
+        //this.user = user;
     }
 
     public Long getId() {
@@ -90,13 +93,13 @@ public class Card {
         this.creationDate = creationDate;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
+//    public User getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
 }
 
 enum CardStatus {

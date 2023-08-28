@@ -13,8 +13,7 @@ public class CardService {
 
     @Autowired
     private CardRepository cardRepository;
-    @Autowired
-    private JwtAuthorizationFilter jwtAuthorizationFilter;
+
 
     public Card createCard(Card card) {
         // Additional validation and business logic can be added here
