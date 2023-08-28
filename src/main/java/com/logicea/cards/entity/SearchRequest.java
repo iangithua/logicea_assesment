@@ -26,16 +26,23 @@ public class SearchRequest {
     @Column(nullable = true)
     private String sortField;
 
+    @Column(nullable = true)
+    private int page;
 
-    public SearchRequest(String name, String color, String status, Date startDate, Date endDate, String sortField) {
+    @Column(nullable = true)
+    private int size;
+
+
+    public SearchRequest(String name, String color, String status, Date startDate, Date endDate, String sortField, int page, int size) {
         this.name = name;
         this.color = color;
         this.status = status;
         this.startDate = startDate;
         this.endDate = endDate;
         this.sortField = sortField;
+        this.page = page;
+        this.size = size;
     }
-
 
     public String getName() {
         return name;
@@ -83,5 +90,21 @@ public class SearchRequest {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
     }
 }

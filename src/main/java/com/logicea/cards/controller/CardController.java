@@ -4,6 +4,7 @@ import com.logicea.cards.entity.Card;
 import com.logicea.cards.entity.SearchRequest;
 import com.logicea.cards.service.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +18,8 @@ public class CardController {
     private CardService cardService;
 
     @PostMapping("/search")
-    public ResponseEntity<List<Card>> getAllMyCardsWithFilters(@RequestBody SearchRequest searchRequest) {
-        List<Card> createdCard = cardService.getAllMyCardsWithFilters(searchRequest.getName(),searchRequest.getColor(),searchRequest.getStatus(),searchRequest.getStartDate(),searchRequest.getEndDate(),searchRequest.getSortField());
+    public ResponseEntity<Page<Card>> getAllMyCardsWithFilters(@RequestBody SearchRequest searchRequest) {
+        Page<Card> createdCard = cardService.getAllMyCardsWithFilters(searchRequest.getName(),searchRequest.getColor(),searchRequest.getStatus(),searchRequest.getStartDate(),searchRequest.getEndDate(),searchRequest.getSortField(), searchRequest.getPage(), searchRequest.getSize());
         return new ResponseEntity<>(createdCard, HttpStatus.OK);
     }
 

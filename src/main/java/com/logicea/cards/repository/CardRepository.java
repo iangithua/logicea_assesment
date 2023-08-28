@@ -1,6 +1,8 @@
 package com.logicea.cards.repository;
 
 import com.logicea.cards.entity.Card;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -26,10 +28,11 @@ public interface CardRepository extends JpaRepository<Card, Long> {
             "AND (:startDate IS NULL OR c.created_at >= :startDate) " +
             "AND (:endDate IS NULL OR c.created_at <= :endDate)"+
             "ORDER BY " +
+            "CASE WHEN :sortField IS NULL THEN c.name END ASC, " +
             "CASE WHEN :sortField = 'name' THEN c.name END ASC, " +
             "CASE WHEN :sortField = 'color' THEN c.color END ASC, " +
             "CASE WHEN :sortField = 'status' THEN c.status END ASC, " +
-            "CASE WHEN :sortField = 'createdAt' THEN c.created_at END ASC" , nativeQuery = true)
-    List<Card> searchWithFilters(
-            String name,String userName, String color, String status, Date startDate, Date endDate,String sortField);
+            "CASE WHEN :sortField = 'created_at' THEN c.created_at END ASC" , nativeQuery = true)
+    Page<Card> searchWithFilters(
+            String name,String userName, String color, String status, Date startDate, Date endDate,String sortField, Pageable pageable);
 }
