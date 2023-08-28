@@ -59,6 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable() // Disable CSRF for simplicity, configure properly for production
                 .authorizeRequests()
                 .antMatchers("/api/auth/login").permitAll() // Allow login endpoint
+                .antMatchers("/api/cards/all-cards").hasAnyAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(authenticationManager(), jwtConfig), UsernamePasswordAuthenticationFilter.class)
