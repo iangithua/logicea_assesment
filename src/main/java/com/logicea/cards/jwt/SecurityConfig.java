@@ -1,6 +1,7 @@
 package com.logicea.cards.jwt;
 
 import com.logicea.cards.error.CustomAccessDeniedHandler;
+import com.logicea.cards.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +27,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private  JwtConfig jwtConfig;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
@@ -50,6 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(authenticationManager(), jwtConfig), UsernamePasswordAuthenticationFilter.class)
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(),jwtConfig,userRepository))
                 .exceptionHandling()
                 .accessDeniedHandler(new CustomAccessDeniedHandler()); // Custom access denied handler
     }

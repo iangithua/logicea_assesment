@@ -1,6 +1,7 @@
 package com.logicea.cards.service;
 
 import com.logicea.cards.entity.Card;
+import com.logicea.cards.jwt.JwtAuthorizationFilter;
 import com.logicea.cards.repository.CardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,9 +13,12 @@ public class CardService {
 
     @Autowired
     private CardRepository cardRepository;
+    @Autowired
+    private JwtAuthorizationFilter jwtAuthorizationFilter;
 
     public Card createCard(Card card) {
         // Additional validation and business logic can be added here
+
         return cardRepository.save(card);
     }
 

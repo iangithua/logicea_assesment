@@ -1,25 +1,29 @@
 package com.logicea.cards.jwt;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+@ConfigurationProperties(prefix = "jwt")
+@Configuration("jwtConfig")
 public class JwtConfig {
 
-    @Value("${jwt.secret}") // Load from application.properties or application.yml
     private String secret;
-
-    @Value("${jwt.expiration}") // Load from application.properties or application.yml
     private int expiration;
-
-    @Value("${jwt.uri}") // Load from application.properties or application.yml
     private String uri;
+    private String headString;
+    private String prefix;
 
-//    @Bean
-//    public JwtUtils jwtUtils() {
-//        return new JwtUtils(secret, expiration);
-//    }
+    // Load from application.properties or application.yml
+    public JwtConfig(@Value("${jwt.secret}") String secret,@Value("${jwt.expiration}") int expiration,@Value("${jwt.uri}") String uri,
+                     @Value("${jwt.headstring}") String headString,@Value("${jwt.prefix}") String prefix) {
+        this.secret = secret;
+        this.expiration = expiration;
+        this.uri = uri;
+        this.headString = headString;
+        this.prefix = prefix;
+        System.out.println("JwtConfig Constructer "+" secret "+this.secret+" headString "+headString);
+    }
 
     public String getSecret() {
         return secret;
@@ -32,4 +36,7 @@ public class JwtConfig {
     public String getUri() {
         return uri;
     }
+
+    public String getHeadString() {return headString;}
+    public String getPrefix() {return prefix;}
 }

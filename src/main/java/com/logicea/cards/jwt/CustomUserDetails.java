@@ -20,7 +20,7 @@ public class CustomUserDetails implements UserDetails {
         this.username = user.getEmail();
         this.password = user.getPassword(); // Assuming User has a getPassword() method
         this.authorities = Arrays.stream(UserRole.values())
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                .map(role -> new SimpleGrantedAuthority(role.name()))
                 .collect(Collectors.toList());
         System.out.println("authorities "+authorities);
     }
