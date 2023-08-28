@@ -29,7 +29,7 @@ public interface CardRepository extends JpaRepository<Card, Long> {
             "CASE WHEN :sortField = 'name' THEN c.name END ASC, " +
             "CASE WHEN :sortField = 'color' THEN c.color END ASC, " +
             "CASE WHEN :sortField = 'status' THEN c.status END ASC, " +
-            "CASE WHEN :sortField = 'createdAt' THEN c.created_at END ASC", nativeQuery = true)
+            "CASE WHEN :sortField = 'createdAt' THEN c.created_at END ASC" , nativeQuery = true)
     List<Card> searchWithFilters(
             String name,String userName, String color, String status, Date startDate, Date endDate,String sortField);
 }
