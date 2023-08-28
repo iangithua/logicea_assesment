@@ -18,7 +18,6 @@ public class User {
     @Column(nullable = false)
     private UserRole role;
 
-    // Constructors, getters, setters, etc.
 
     public User() {
     }
@@ -63,7 +62,3 @@ public class User {
     }
 }
 
-enum UserRole {
-    MEMBER,
-    ADMIN
-}
