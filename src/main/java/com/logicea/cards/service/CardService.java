@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CurrencyEditor;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +33,7 @@ public class CardService {
 
     public Card getCardById(Long cardId) {
         System.out.println("currentEditor "+currentEditor.getCurrentAuditor().get());
-        Card optionalCard = cardRepository.findByIdAndCreatedBy(cardId,"iangithua@gmail.com");
+        Card optionalCard = cardRepository.findByIdAndCreatedBy(cardId,currentEditor.getCurrentAuditor().get());
         return optionalCard;
     }
 
@@ -40,8 +42,12 @@ public class CardService {
     }
 
     public List<Card> getAllMyCards()  {
-        return cardRepository.findAllMyCards("iangithua@gmail.com");
+        return cardRepository.findAllMyCards(currentEditor.getCurrentAuditor().get());
     }
+    public List<Card> getAllMyCardsWithFilters(String name, String color, String status, Date startDate, Date endDate,String sortField)  {
+        return cardRepository.searchWithFilters(name,currentEditor.getCurrentAuditor().get(),color,status,startDate,endDate,sortField);
+    }
+
     public Card updateCard(Long cardId, Card card) {
         Optional<Card> optionalCard = cardRepository.findById(cardId);
         if (optionalCard.isPresent()) {

@@ -1,6 +1,7 @@
 package com.logicea.cards.controller;
 
 import com.logicea.cards.entity.Card;
+import com.logicea.cards.entity.SearchRequest;
 import com.logicea.cards.service.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,12 @@ public class CardController {
 
     @Autowired
     private CardService cardService;
+
+    @PostMapping("/search")
+    public ResponseEntity<List<Card>> getAllMyCardsWithFilters(@RequestBody SearchRequest searchRequest) {
+        List<Card> createdCard = cardService.getAllMyCardsWithFilters(searchRequest.getName(),searchRequest.getColor(),searchRequest.getStatus(),searchRequest.getStartDate(),searchRequest.getEndDate(),searchRequest.getSortField());
+        return new ResponseEntity<>(createdCard, HttpStatus.OK);
+    }
 
     @PostMapping
     public ResponseEntity<Card> createCard(@RequestBody Card card) {
