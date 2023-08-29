@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/static/css/styles.css}" />
+    <link rel="icon" href="/static/img/my_logo.png" type="image/png" />
+</head>
+<body>
+<div class="login-box">
+
+    <form action="/submit" method="post">
+        <div class="user-title">
+            <h1>Cards</h1>
+        </div>
+        <div class="user-box">
+            <input type="text" name="email" id="email" required="">
+            <label>Username</label>
+        </div>
+        <div class="user-box">
+            <input type="password" name="password" id="password" required="">
+            <label>Password</label>
+        </div>
+
+        <a href="#" id="sendLink">SEND<span></span></a>
+
+
+    </form>
+</div>
+    <script>
+        document.getElementById("sendLink").addEventListener("click", function (event) {
+            event.preventDefault(); // Prevent the default link behavior
+            this.parentNode.submit(); // Trigger form submission
+        });
+    </script>
+</body>
+</html>
