@@ -72,7 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/cards/all-cards").hasAnyAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(new JwtAuthenticationFilter(authenticationManager(), jwtConfig), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthenticationFilter(authenticationManager(), jwtConfig),UsernamePasswordAuthenticationFilter.class)
                 .addFilterAfter(new JwtAuthorizationFilter(authenticationManager(),jwtConfig,userRepository),JwtAuthenticationFilter.class)
                 .exceptionHandling()
                 .accessDeniedHandler(new CustomAccessDeniedHandler());// Custom access denied handler
