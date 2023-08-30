@@ -17,7 +17,7 @@
     <div class="row">
         <div class="col-8"><h1>Cards Dashboard</h1></div>
         <div class="col-2">
-            <button class="add-btn" type="button" data-toggle="modal" data-target="#addCardModal"> Admin Only</button>
+            <button class="add-btn" type="button" id="admin-only"> Admin Only</button>
         </div>
         <div class="col-2">
             <button class="add-btn" type="button" data-toggle="modal" data-target="#addCardModal"> Add Card</button>
@@ -245,7 +245,6 @@
 
 
 </section>
-<!--populate the modal based on the card-->
 <script>
             $(document).ready(function() {
             var sizeValue = $('#sizeInput').val();
@@ -258,7 +257,20 @@
         loadPage(1,sizeValue,"","","","","name"); // Load the first page with the new page size
     });
 
-        $('.edit-button').click(function() {
+
+
+     $('#admin-only').click(function() {
+
+       loadAdmin();
+    });
+  });
+ $(document).ready(function() {
+ $('#card-list').on('click', '.delete-button', function() {
+      var cardId = $(this).data('card-id');
+      $('#del_id').val(cardId);
+      });
+  $('#card-list').on('click', '.edit-button', function() {
+          console.log("edit-button clicked");
         var cardId = $(this).data('card-id');
 
         $.ajax({
@@ -272,23 +284,13 @@
                 // Handle error
             }
         });
-    }); });
-
-    function populateModal(card) {
-          console.log("card "+card);
-            // Populate the modal fields with card data
-            $('#id').val(card.id);
-            $('#name').val(card.name);
-            $('#description').val(card.description);
-            $('#color').val(card.color);
-            $('#status').val(card.status);
-            // ... Populate other fields
-          }
-
-            function loadPage(pageNumber,size, name, color, status, date, selectedValue) {
-                $.get('/paginated?page=' + pageNumber+'&size=' +size+'&name=' +name+'&color=' +color+'&status=' +status+'&date=' +date+'&sortField=' +selectedValue, function(data) {
+    });
+  });
+              function loadAdmin() {
+                $.get('/admin', function(data) {
                     // Update the card list with the received data
                     var cardListHtml = '';
+                    if (Array.isArray(data.content)) {
                     data.content.forEach(function(card) {
                         cardListHtml += `
                         <div class="card-grid-space">
@@ -300,12 +302,45 @@
                                     <p>${card.color}</p>
                                     <p>${card.status}</p>
                                     <div class="date">${card.createdAt}</div>
+                                </div>
+                            </a>
+                        </div>
+                    `;
+                    });
+                    $('#card-list').html(cardListHtml);
+                  } else {
+            // Handle unexpected response
+            console.error('Invalid response format:', data);
+        }
+    }).fail(function(xhr, textStatus, error) {
+        console.error('Error fetching data:', error);
+      });
+            }
+
+
+
+
+            function loadPage(pageNumber,size, name, color, status, date, selectedValue) {
+                $.get('/paginated?page=' + pageNumber+'&size=' +size+'&name=' +name+'&color=' +color+'&status=' +status+'&date=' +date+'&sortField=' +selectedValue, function(data) {
+                    // Update the card list with the received data
+                    var cardListHtml = '';
+                    data.content.forEach(function(card) {
+                        cardListHtml += `
+                        <div class="card-grid-space">
+                            <div class="num" th:each="card : ${card}">${card.id}</div>
+                            <a class="card" style="--bg-img: url(https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&resize_w=1500&url=https://codetheweb.blog/assets/img/posts/html-syntax/cover.jpg)">
+                                <div style="width: 100%; height: 100%; padding-top: 30px;">
+                                    <h1  th:text="${card.name}">${card.name}</h1>
+                                    <p th:text="${card.description}">${card.description}</p>
+                                    <p th:text="${card.color}">${card.color}</p>
+                                    <p th:text="${card.status}">${card.status}</p>
+                                    <div class="date" th:text="${card.createdAt}">${card.createdAt}</div>
                                     <div class="tags">
                                         <div class="tag">
-                                            <button class="Btn edit-button" type="button" data-toggle="modal" data-target="#updateCardModal" data-card-id="${card.id}">Edit</button>
+                                            <button class="Btn edit-button" id="openModalBtn" type="button" data-toggle="modal" data-target="#updateCardModal" data-card-id=${card.id}>Edit</button>
                                         </div>
                                         <div class="tag">
-                                            <button class="Btn delete-button" type="button" data-toggle="modal" data-target="#deleteCardModal" data-card-id="${card.id}">Del</button>
+                                            <button class="Btn delete-button" id="openDeleteModalBtn" type="button" data-toggle="modal" data-target="#deleteCardModal" data-card-id=${card.id}>Del</button>
                                         </div>
                                     </div>
                                 </div>
@@ -344,6 +379,18 @@
                     $('.pagination a[data-page="' + pageNumber + '"]').addClass('active');
                 });
             }
+
+        function populateModal(card) {
+          console.log("card "+card);
+            // Populate the modal fields with card data
+            $('#id').val(card.id);
+            $('#name').val(card.name);
+            $('#description').val(card.description);
+            $('#color').val(card.color);
+            $('#status').val(card.status);
+            // ... Populate other fields
+          }
+
 
           $(document).on('click', '.pagination a', function(e) {
             e.preventDefault();
@@ -460,6 +507,8 @@
 
 
         </script>
+
+
 <!-- Include jQuery and Bootstrap JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>

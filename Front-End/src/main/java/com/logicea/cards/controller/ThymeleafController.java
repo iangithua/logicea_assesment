@@ -34,6 +34,33 @@ public class ThymeleafController {
         this.inMemoryStorage = inMemoryStorage;
     }
 
+    @GetMapping("/admin")
+    public ResponseEntity<Map<String, Object>> getAdminPage() throws JsonProcessingException{
+
+        String token=inMemoryStorage.get("token");
+        // Set headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add("Authorization", "Bearer "+token);
+
+        // Create HttpEntity with headers and payload
+        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+        // Make a REST template call to another service to fetch paginated data
+//        ResponseEntity<Map> response = restTemplate.getForEntity("http://localhost:8080/api/cards/all-cards", Map.class,requestEntity);
+        ResponseEntity<List> jsonResponse = restTemplate.exchange("http://localhost:8080/api/cards/all-cards", HttpMethod.GET, requestEntity, List.class);
+
+        System.out.println("jsonResponse"+jsonResponse.getBody());
+        System.out.println("jsonResponse" + jsonResponse.getBody());
+
+        List<Map<String, Object>> content = jsonResponse.getBody();
+
+// Now you can create a new responseData map
+        Map<String, Object> responseData = new HashMap<>();
+        responseData.put("content", content);
+
+
+        return ResponseEntity.ok(responseData);
+    }
     @GetMapping("/paginated")
     public ResponseEntity<Map<String, Object>> getPaginatedCards(@RequestParam int page,@RequestParam int size,@RequestParam String name,
             @RequestParam String color,@RequestParam String status
@@ -114,7 +141,8 @@ public class ThymeleafController {
     }
 
     @GetMapping("/get-card/{cardId}")
-    public ResponseEntity<Card> getCard(@PathVariable Long cardId) {
+    public ResponseEntity<Card> getCard(@PathVariable String cardId) {
+        Long stringCardId = Long.parseLong(cardId);
         System.out.println("getCard");
         String cardsObject = inMemoryStorage.get("cards");
         ObjectMapper objectMapper = new ObjectMapper();
@@ -124,7 +152,7 @@ public class ThymeleafController {
 
             // Now you have an array of Card objects
             for (Card card : cards) {
-                if(card.getId()== cardId.longValue())
+                if(card.getId()== stringCardId.longValue())
                 {
                     responseCard=card;
                     System.out.println("found card"+responseCard.getName());
