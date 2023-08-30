@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.logicea.cards.config.Configs;
 import com.logicea.cards.entity.Card;
+import com.logicea.cards.entity.Payload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +34,47 @@ public class ThymeleafController {
         this.inMemoryStorage = inMemoryStorage;
     }
 
+    @GetMapping("/paginated")
+    public ResponseEntity<Map<String, Object>> getPaginatedCards(@RequestParam int page,@RequestParam int size,@RequestParam String name,
+            @RequestParam String color,@RequestParam String status
+            ,@RequestParam String date,@RequestParam String sortField
+            ) throws JsonProcessingException{
+
+
+        System.out.println("paginated mapping "+name+color+status+date+sortField);
+        String token=inMemoryStorage.get("token");
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        Payload payload = new Payload();
+        payload.setPage(page);
+        payload.setSize(size);
+        payload.setName(name);
+        payload.setColor(color);
+        payload.setStatus(status);
+        payload.setDate(date);
+        payload.setSortField(sortField);
+
+        String jsonPayload = objectMapper.writeValueAsString(payload);
+
+        System.out.println("jsonPayload "+jsonPayload);
+        // Set headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add("Authorization", "Bearer "+token);
+
+        // Create HttpEntity with headers and payload
+        HttpEntity<String> requestEntity = new HttpEntity<>(jsonPayload, headers);
+        // Make a REST template call to another service to fetch paginated data
+        ResponseEntity<Map> response = restTemplate.postForEntity("http://localhost:8080/api/cards/search/",requestEntity, Map.class);
+
+        Map<String, Object> responseData = new HashMap<>();
+        responseData.put("content", response.getBody().get("content"));
+        responseData.put("pagination", response.getBody());
+
+
+        return ResponseEntity.ok(responseData);
+    }
+
     @PostMapping("/submit")
     public String handleLogin(Model userForm, String email, String password) throws JsonProcessingException {
 
@@ -42,6 +85,7 @@ public class ThymeleafController {
             // Set headers
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
+
 
             // Create HttpEntity with headers and payload
             HttpEntity<String> requestEntity = new HttpEntity<>(jsonPayload, headers);

@@ -51,7 +51,7 @@ public class CardService {
     public List<Card> getAllMyCards()  {
         return cardRepository.findAllMyCards(currentEditor.getCurrentAuditor().get());
     }
-    public Page<Card> getAllMyCardsWithFilters(String name, String color, String status, Date startDate, Date endDate, String sortField,int page,int size)  {
+    public Page<Card> getAllMyCardsWithFilters(String name, String color, String status, Date date, String sortField,int page,int size)  {
         Pageable pageable=null;
         //Defaults
         int finalPage = page == 0 ? 1 : page;
@@ -63,7 +63,7 @@ public class CardService {
         {
             pageable = PageRequest.of(finalPage, finalSize);
         }
-        return cardRepository.searchWithFilters(name,currentEditor.getCurrentAuditor().get(),color,status,startDate,endDate,sortField,pageable);
+        return cardRepository.searchWithFilters(name,currentEditor.getCurrentAuditor().get(),color,status,date,pageable);
     }
 
     public Card updateCard(Long cardId, Card card) {

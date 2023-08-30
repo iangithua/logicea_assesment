@@ -21,18 +21,10 @@ public interface CardRepository extends JpaRepository<Card, Long> {
     List<Card> findAllMyCards(String currentAuditor);
 
     @Query(value = "SELECT * FROM Card c " +
-            "WHERE (:name IS NULL OR c.name LIKE %:name%) " +
-            "AND (:userName IS NULL OR c.created_by =:userName) " +
+            "WHERE (:userName IS NOT NULL AND c.created_by =:userName) " +
+            "AND (:name IS NULL OR c.name LIKE %:name%) " +
             "AND (:color IS NULL OR c.color LIKE %:color%) " +
             "AND (:status IS NULL OR c.status LIKE %:status%) " +
-            "AND (:startDate IS NULL OR c.created_at >= :startDate) " +
-            "AND (:endDate IS NULL OR c.created_at <= :endDate)"+
-            "ORDER BY " +
-            "CASE WHEN :sortField IS NULL THEN c.name END ASC, " +
-            "CASE WHEN :sortField = 'name' THEN c.name END ASC, " +
-            "CASE WHEN :sortField = 'color' THEN c.color END ASC, " +
-            "CASE WHEN :sortField = 'status' THEN c.status END ASC, " +
-            "CASE WHEN :sortField = 'created_at' THEN c.created_at END ASC" , nativeQuery = true)
-    Page<Card> searchWithFilters(
-            String name,String userName, String color, String status, Date startDate, Date endDate,String sortField, Pageable pageable);
+            "AND (:date IS NULL OR c.created_at LIKE %:date%) ", nativeQuery = true)
+    Page<Card> searchWithFilters(String name,String userName, String color, String status, Date date, Pageable pageable);
 }

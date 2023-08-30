@@ -6,8 +6,15 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
 
 import java.time.Duration;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,7 +24,26 @@ public class Configs {
     private String serverUrl;
     private String uri;
     private String card_uri;
+    private ApiInfo apiInfo() {
+        return new ApiInfo("MyApp Rest APIs",
+                "APIs for MyApp.",
+                "1.0",
+                "Terms of service",
+                new Contact("test", "www.org.com", "test@emaildomain.com"),
+                "License of API",
+                "API license URL",
+                Collections.emptyList());
+    }
 
+    @Bean
+    public Docket api() {
+        return new Docket(DocumentationType.OAS_30)
+                .apiInfo(apiInfo())
+                .select()
+                .apis(RequestHandlerSelectors.any())
+                .paths(PathSelectors.any())
+                .build();
+    }
     @Bean
     public Map<String, String> inMemoryStorage() {
         return new HashMap<>();

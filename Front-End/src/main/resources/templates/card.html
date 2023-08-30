@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <title>Cards Dashboard</title>
     <!-- Include Bootstrap CSS -->
@@ -10,16 +10,98 @@
     <link href="/static/img/my_logo.png" rel="icon" type="image/png"/>
 </head>
 <body>
-<h1>Cards Dashboard</h1>
+
 <div class="header">
     <!-- View All Cards Section -->
-    <h2>View All Cards</h2>
-    <button class="add-btn" type="button" data-toggle="modal" data-target="#addCardModal"> Add Card</button>
+
+    <div class="row">
+        <div class="col-8"><h1>Cards Dashboard</h1></div>
+        <div class="col-2">
+            <button class="add-btn" type="button" data-toggle="modal" data-target="#addCardModal"> Admin Only</button>
+        </div>
+        <div class="col-2">
+            <button class="add-btn" type="button" data-toggle="modal" data-target="#addCardModal"> Add Card</button>
+        </div>
+    </div>
+</div>
+</br>
+<div class="paginated">
+    <div class="row justify-content-md-center">
+
+        <div class="col col-lg-2"><input class="input" id="sizeInput"name="text" placeholder="Page Size" value="3" type="text"></div>
+            <div class="col-md-auto">
+                <nav aria-label="Page navigation">
+
+                <ul class="pagination" id="pagination">
+                    <!-- Pagination links will be added here -->
+
+                </ul>
+                </nav>
+            </div>
+
+    </div>
+</div>
+</br>
+<div class="Filters">
+    <div class="row justify-content-md-center">
+
+
+        <div class="col-md-auto"><p>Search By:</p><div class="radio-inputs">
+            <label class="radio">
+                <input type="radio" name="radio" value="name">
+                <span class="name">Name</span>
+            </label>
+            <label class="radio">
+                <input type="radio" name="radio" value="color">
+                <span class="name">Color</span>
+            </label>
+
+            <label class="radio">
+                <input type="radio" name="radio" value="status">
+                <span class="name">Status</span>
+            </label>
+
+            <label class="radio">
+                <input type="radio" name="radio" value="date">
+                <span class="name">Date Range</span>
+            </label>
+
+        </div></div>
+        <div class="col col-lg-2"><input class="input" id="searchValue" name="text" placeholder="Value.." type="text"></div>
+        <div class="col-md-auto"><p>Order By:</p><div class="radio-order">
+            <label class="radio">
+                <input type="radio" name="radio1" value="name" checked="">
+                <span class="name">Name</span>
+            </label>
+            <label class="radio">
+                <input type="radio" name="radio1" value="color">
+                <span class="name">Color</span>
+            </label>
+
+            <label class="radio">
+                <input type="radio" name="radio1" value="status">
+                <span class="name">Status</span>
+            </label>
+
+            <label class="radio">
+                <input type="radio" name="radio1" value="date">
+                <span class="name">Date</span>
+            </label>
+
+        </div></div>
+
+        <div class="col col-lg-2"><button class="filter-button">
+            <span class="filter-transition"></span>
+            <span class="filter-gradient"></span>
+            <span class="filter-label">Filter</span>
+        </button></div>
+
+    </div>
 
 </div>
-
 <!-- Add New Card Modal -->
-<div class="modal fade" id="addCardModal" tabindex="-1" role="dialog" aria-labelledby="addCardModalLabel" aria-hidden="true">
+<div class="modal fade" id="addCardModal" tabindex="-1" role="dialog" aria-labelledby="addCardModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-body">
@@ -27,41 +109,47 @@
                 <form class="form" action="/card-new" method="post">
                     <p>Card</p>
                     <div class="container-1">
-                    <div class="group">
-                        <input required="true" class="main-input" type="text" name="name">
-                        <span class="highlight-span"></span>
-                        <label class="lebal-email">Name</label>
-                    </div></div>
+                        <div class="group">
+                            <input required="true" class="main-input" type="text" name="name">
+                            <span class="highlight-span"></span>
+                            <label class="lebal-email">Name</label>
+                        </div>
+                    </div>
                     <div class="container-1">
-                    <div class="group">
-                        <input required="true" class="main-input" type="text" name="description">
-                        <span class="highlight-span"></span>
-                        <label class="lebal-email">Description</label>
-                    </div></div>
-
-                    <div class="container-1">
-                    <div class="group">
-                        <input required="true" class="main-input" type="text" value="#ff0000" id="color_place_holder"  disabled>
-                        <span class="highlight-span"></span>
-<!--                        <label class="lebal-email">Description</label>-->
-                    </div></div>
-
-
-                        <input style="height: 40px;" required="true" class="main-input" type="color" name="color" id="color_picker" value="#ff0000">
-
+                        <div class="group">
+                            <input required="true" class="main-input" type="text" name="description">
+                            <span class="highlight-span"></span>
+                            <label class="lebal-email">Description</label>
+                        </div>
+                    </div>
 
                     <div class="container-1">
-                    <div class="group">
-                        <select name="status" >
-                            <option value="TO_DO">To Do</option>
-                            <option value="IN_PROGRESS">In Progress</option>
-                            <option value="DONE">Done</option>
-                        </select>
-                    </div> </div>
+                        <div class="group">
+                            <input required="true" class="main-input" type="text" value="#ff0000"
+                                   id="color_place_holder" disabled>
+                            <span class="highlight-span"></span>
+                            <!--                        <label class="lebal-email">Description</label>-->
+                        </div>
+                    </div>
+
+
+                    <input style="height: 40px;" required="true" class="main-input" type="color" name="color"
+                           id="color_picker" value="#ff0000">
+
+
+                    <div class="container-1">
+                        <div class="group">
+                            <select name="status">
+                                <option value="TO_DO">To Do</option>
+                                <option value="IN_PROGRESS">In Progress</option>
+                                <option value="DONE">Done</option>
+                            </select>
+                        </div>
+                    </div>
 
                     <div class="row">
-                    <button type="submit" class="submit" >submit</button>
-                    <button type="reset" class="submit" >clear</button>
+                        <button type="submit" class="submit">submit</button>
+                        <button type="reset" class="submit">clear</button>
                     </div>
                 </form>
             </div>
@@ -69,7 +157,8 @@
     </div>
 </div>
 <!--Update Card Modal-->
-<div class="modal fade" id="updateCardModal" tabindex="-1" role="dialog" aria-labelledby="updateCardModalLabel" aria-hidden="true">
+<div class="modal fade" id="updateCardModal" tabindex="-1" role="dialog" aria-labelledby="updateCardModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-body">
@@ -82,45 +171,42 @@
                             <input required="true" class="main-input" type="text" id="name" name="name">
                             <span class="highlight-span"></span>
                             <label class="lebal-email">Name</label>
-                        </div></div>
+                        </div>
+                    </div>
                     <div class="container-1">
                         <div class="group">
                             <input required="true" class="main-input" type="text" id="description" name="description">
                             <span class="highlight-span"></span>
                             <label class="lebal-email"></label>
-                        </div></div>
+                        </div>
+                    </div>
 
                     <div class="container-1">
                         <div class="group">
-                            <input required="true" class="main-input" type="text" name="color" id="color"  disabled>
+                            <input required="true" class="main-input" type="text" name="color" id="color" disabled>
                             <span class="highlight-span"></span>
                             <!--                        <label class="lebal-email">Description</label>-->
-                        </div></div>
+                        </div>
+                    </div>
 
 
-                    <input style="height: 40px;" required="true" class="main-input" type="color" name="color" id="color_picker_update" value="#ff0000">
+                    <input style="height: 40px;" required="true" class="main-input" type="color" name="color"
+                           id="color_picker_update" value="#ff0000">
 
-
-
-<!--                    <div class="container-1">-->
-<!--                        <div class="group">-->
-<!--                            <input required="true" class="main-input" type="text" id="color" name="color">-->
-<!--                            <span class="highlight-span"></span>-->
-<!--                            <label class="lebal-email">Color</label>-->
-<!--                        </div></div>-->
 
                     <div class="container-1">
                         <div class="group">
-                            <select name="status" id="status" >
+                            <select name="status" id="status">
                                 <option value="TO_DO">To Do</option>
                                 <option value="IN_PROGRESS">In Progress</option>
                                 <option value="DONE">Done</option>
                             </select>
-                        </div> </div>
+                        </div>
+                    </div>
 
                     <div class="row">
-                        <button type="submit" class="submit" >submit</button>
-                        <button type="reset" class="submit" >clear</button>
+                        <button type="submit" class="submit">submit</button>
+                        <button type="reset" class="submit">clear</button>
                     </div>
                 </form>
             </div>
@@ -128,7 +214,8 @@
     </div>
 </div>
 
-<div class="modal fade" id="deleteCardModal" tabindex="-1" role="dialog" aria-labelledby="deleteCardModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteCardModal" tabindex="-1" role="dialog" aria-labelledby="deleteCardModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-body">
@@ -139,138 +226,221 @@
 
                         <div class="group">
                             <input required="true" class="main-input" id="del_id" name="id" type="text">
-                        </div></div>
+                        </div>
+                    </div>
 
 
                     <div class="row">
-                        <button type="submit" class="submit" >submit</button>
-                        <button type="reset" class="submit" >clear</button>
+                        <button type="submit" class="submit">submit</button>
+                        <button type="reset" class="submit">clear</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
-<section class="cards-wrapper">
-    <div class="card-grid-space" th:each="card : ${cards}">
-        <div class="num" th:text="${card.id}">Id</div>
-        <a class="card"
-             style="--bg-img: url(https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&resize_w=1500&url=https://codetheweb.blog/assets/img/posts/html-syntax/cover.jpg)">
-            <div style="width: 100%;height: 100%;padding-top: 30px;">
-                <h1 th:text="${card.name}">Name</h1>
-                <p th:text="${card.description}">Description</p>
-                <p th:text="${card.color}">Color</p>
-                <p th:text="${card.status}">Status</p>
+<section class="cards-wrapper" id="card-list">
 
-                <div class="date" th:text="${card.createdAt}">Date</div>
+        <!-- Cards will be displayed here -->
 
-                <div class="tags">
-                    <div class="tag">
-                        <button class="Btn edit-button" type="button" id="openModalBtn" data-toggle="modal" data-target="#updateCardModal" th:attr="data-card-id=${card.id}">Edit</button>
-                    </div>
-
-                    <div class="tag">
-                        <button class="Btn delete-button" type="button" id="openDeleteModalBtn" data-toggle="modal" data-target="#deleteCardModal" th:attr="data-card-id=${card.id}">Del</button>
-                    </div>
-                </div>
-
-            </div>
-        </a>
-    </div>
 
 </section>
 <!--populate the modal based on the card-->
 <script>
+            $(document).ready(function() {
+            var sizeValue = $('#sizeInput').val();
 
-let colorPicker2;
-const defaultColor2 = "#0000ff";
-
-window.addEventListener("load", startup2, false);
-
-function startup2() {
-  colorPicker2 = document.querySelector("#color_picker_update");
-  colorPicker2.value = defaultColor2;
-  colorPicker2.addEventListener("input", updateFirst2, false);
-  colorPicker2.addEventListener("change", updateAll2, false);
-  colorPicker2.select();
-}
-
-function updateFirst2(event) {
-  const p = document.querySelector("#color");
-  if (p) {
-    p.value = event.target.value;
-  }
-}
-
-function updateAll2(event) {
-  document.querySelectorAll("#color").forEach((p) => {
-    p.value = event.target.value;
-  });
-}
-
-
-
-
-let colorPicker;
-const defaultColor = "#0000ff";
-
-window.addEventListener("load", startup, false);
-
-function startup() {
-  colorPicker = document.querySelector("#color_picker");
-  colorPicker.value = defaultColor;
-  colorPicker.addEventListener("input", updateFirst, false);
-  colorPicker.addEventListener("change", updateAll, false);
-  colorPicker.select();
-}
-
-function updateFirst(event) {
-  const p = document.querySelector("#color_place_holder");
-  if (p) {
-    p.value = event.target.value;
-  }
-}
-
-function updateAll(event) {
-  document.querySelectorAll("#color_place_holder").forEach((p) => {
-    p.value = event.target.value;
-  });
-}
-
-
-
-$(document).ready(function() {
-  $('.delete-button').click(function() {
-      var cardId = $(this).data('card-id');
-      $('#del_id').val(cardId);
-      });
-    $('.edit-button').click(function() {
-      var cardId = $(this).data('card-id');
-
-      $.ajax({
-        url: '/get-card/' + cardId, // Adjust the URL to match your endpoint
-        type: 'GET',
-        success: function(card) {
-          // Assuming you have a function to populate the modal with card data
-          populateModal(card);
-        },
-        error: function() {
-          // Handle error
-        }
-      });
+              loadPage(1,sizeValue,"","","","","name"); // Load the first page initially
+              // Add event handler for input value change
+    $('#sizeInput').on('change', function() {
+        var sizeValue = $(this).val();
+        console.log("sizeValue "+sizeValue);
+        loadPage(1,sizeValue,"","","","","name"); // Load the first page with the new page size
     });
-  });
 
-  function populateModal(card) {
-    // Populate the modal fields with card data
-    $('#id').val(card.id);
-    $('#name').val(card.name);
-    $('#description').val(card.description);
-    $('#color').val(card.color);
-    $('#status').val(card.status);
-    // ... Populate other fields
-  }
-</script>
+        $('.edit-button').click(function() {
+        var cardId = $(this).data('card-id');
+
+        $.ajax({
+            url: '/get-card/' + cardId, // Replace with your controller endpoint
+            type: 'GET',
+            success: function(card) {
+                // Assuming you have a function to populate the modal with card data
+                populateModal(card);
+            },
+            error: function() {
+                // Handle error
+            }
+        });
+    }); });
+
+    function populateModal(card) {
+          console.log("card "+card);
+            // Populate the modal fields with card data
+            $('#id').val(card.id);
+            $('#name').val(card.name);
+            $('#description').val(card.description);
+            $('#color').val(card.color);
+            $('#status').val(card.status);
+            // ... Populate other fields
+          }
+
+            function loadPage(pageNumber,size, name, color, status, date, selectedValue) {
+                $.get('/paginated?page=' + pageNumber+'&size=' +size+'&name=' +name+'&color=' +color+'&status=' +status+'&date=' +date+'&sortField=' +selectedValue, function(data) {
+                    // Update the card list with the received data
+                    var cardListHtml = '';
+                    data.content.forEach(function(card) {
+                        cardListHtml += `
+                        <div class="card-grid-space">
+                            <div class="num">${card.id}</div>
+                            <a class="card" style="--bg-img: url(https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&resize_w=1500&url=https://codetheweb.blog/assets/img/posts/html-syntax/cover.jpg)">
+                                <div style="width: 100%; height: 100%; padding-top: 30px;">
+                                    <h1>${card.name}</h1>
+                                    <p>${card.description}</p>
+                                    <p>${card.color}</p>
+                                    <p>${card.status}</p>
+                                    <div class="date">${card.createdAt}</div>
+                                    <div class="tags">
+                                        <div class="tag">
+                                            <button class="Btn edit-button" type="button" data-toggle="modal" data-target="#updateCardModal" data-card-id="${card.id}">Edit</button>
+                                        </div>
+                                        <div class="tag">
+                                            <button class="Btn delete-button" type="button" data-toggle="modal" data-target="#deleteCardModal" data-card-id="${card.id}">Del</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    `;
+                    });
+                    $('#card-list').html(cardListHtml);
+        /////////////////
+        // Calculate the number of pages
+        var paginationData=data.pagination;
+        var totalPages = paginationData.totalPages;
+
+        // Create an object to hold the pagination links
+        var paginationLinks = '<ul class="pagination">';
+
+        // Previous page link
+        // <!--console.log("totalPages "+totalPages);-->
+        // Page links
+        for (var i = 1; i <= totalPages; i++) {
+            paginationLinks += '<li class="page-item"><a class="page-link" href="#" data-page="' + i + '">' + i + '</a></li>';
+
+        }
+
+        paginationLinks += '</ul>';
+
+        // Set the HTML content of the #pagination element
+        $('#pagination').html(paginationLinks);
+
+
+
+        /////////////////
+
+
+                    // Add an active class to the current page link
+                    $('.pagination a[data-page="' + pageNumber + '"]').addClass('active');
+                });
+            }
+
+          $(document).on('click', '.pagination a', function(e) {
+            e.preventDefault();
+            var pageNumber = $(this).data('page');
+            var sizeValue = $('#sizeInput').val();
+            var selectedValueOrderBy = $('.radio-order input[type="radio"]:checked').val();
+            loadPage(pageNumber,sizeValue,"","","","","name");
+        });
+
+
+         $(document).on('click', '.filter-button', function(e) {
+    e.preventDefault();
+    var pageNumber = 1;
+    var sizeValue = $('#sizeInput').val();
+    var searchValue = $('#searchValue').val();
+    var selectedValue = $('.radio-inputs input[type="radio"]:checked').val();
+    var selectedValueOrderBy = $('.radio-order input[type="radio"]:checked').val(); // Replace with the actual ID of your select element
+
+    // Determine which option was selected based on its value
+    var name = "";
+    var color = "";
+    var status = "";
+    var date = "";
+
+    if (selectedValue === 'name') {
+        name = searchValue;
+    } else if (selectedValue === 'color') {
+        color = searchValue;
+    } else if (selectedValue === 'status') {
+        status = searchValue;
+    } else if (selectedValue === 'date') {
+        date = searchValue;
+    }
+
+    loadPage(pageNumber, sizeValue, name, color, status, date, selectedValueOrderBy);
+});
+
+
+        let colorPicker2;
+        const defaultColor2 = "#0000ff";
+
+        window.addEventListener("load", startup2, false);
+
+        function startup2() {
+          colorPicker2 = document.querySelector("#color_picker_update");
+          colorPicker2.value = defaultColor2;
+          colorPicker2.addEventListener("input", updateFirst2, false);
+          colorPicker2.addEventListener("change", updateAll2, false);
+          colorPicker2.select();
+        }
+
+        function updateFirst2(event) {
+          const p = document.querySelector("#color");
+          if (p) {
+            p.value = event.target.value;
+          }
+        }
+
+        function updateAll2(event) {
+          document.querySelectorAll("#color").forEach((p) => {
+            p.value = event.target.value;
+          });
+        }
+
+
+
+
+        let colorPicker;
+        const defaultColor = "#0000ff";
+
+        window.addEventListener("load", startup, false);
+
+        function startup() {
+          colorPicker = document.querySelector("#color_picker");
+          colorPicker.value = defaultColor;
+          colorPicker.addEventListener("input", updateFirst, false);
+          colorPicker.addEventListener("change", updateAll, false);
+          colorPicker.select();
+        }
+
+        function updateFirst(event) {
+          const p = document.querySelector("#color_place_holder");
+          if (p) {
+            p.value = event.target.value;
+          }
+        }
+
+        function updateAll(event) {
+          document.querySelectorAll("#color_place_holder").forEach((p) => {
+            p.value = event.target.value;
+          });
+        }
+
+
+
+
+        </script>
 <!-- Include jQuery and Bootstrap JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>

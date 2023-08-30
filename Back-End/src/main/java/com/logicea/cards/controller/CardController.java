@@ -19,7 +19,9 @@ public class CardController {
 
     @PostMapping("/search")
     public ResponseEntity<Page<Card>> getAllMyCardsWithFilters(@RequestBody SearchRequest searchRequest) {
-        Page<Card> createdCard = cardService.getAllMyCardsWithFilters(searchRequest.getName(),searchRequest.getColor(),searchRequest.getStatus(),searchRequest.getStartDate(),searchRequest.getEndDate(),searchRequest.getSortField(), searchRequest.getPage(), searchRequest.getSize());
+        System.out.println("search result "+searchRequest.getName()+searchRequest.getColor()+searchRequest.getStatus()+searchRequest.getCreated_at()+searchRequest.getSortField()+ searchRequest.getPage()+ searchRequest.getSize());
+
+        Page<Card> createdCard = cardService.getAllMyCardsWithFilters(searchRequest.getName(),searchRequest.getColor(),searchRequest.getStatus(),searchRequest.getCreated_at(),searchRequest.getSortField(), searchRequest.getPage(), searchRequest.getSize());
         return new ResponseEntity<>(createdCard, HttpStatus.OK);
     }
 
