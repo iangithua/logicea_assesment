@@ -62,8 +62,8 @@
             </label>
 
             <label class="radio">
-                <input type="radio" name="radio" value="date">
-                <span class="name">Date Range</span>
+                <input type="radio" name="radio" value="created_at">
+                <span class="name">Date</span>
             </label>
 
         </div></div>
@@ -84,7 +84,7 @@
             </label>
 
             <label class="radio">
-                <input type="radio" name="radio1" value="date">
+                <input type="radio" name="radio1" value="created_at">
                 <span class="name">Date</span>
             </label>
 
@@ -349,8 +349,27 @@
             e.preventDefault();
             var pageNumber = $(this).data('page');
             var sizeValue = $('#sizeInput').val();
-            var selectedValueOrderBy = $('.radio-order input[type="radio"]:checked').val();
-            loadPage(pageNumber,sizeValue,"","","","","name");
+    var searchValue = $('#searchValue').val();
+    var selectedValue = $('.radio-inputs input[type="radio"]:checked').val();
+    var selectedValueOrderBy = $('.radio-order input[type="radio"]:checked').val(); // Replace with the actual ID of your select element
+
+    // Determine which option was selected based on its value
+    var name = "";
+    var color = "";
+    var status = "";
+    var created_at = "";
+
+    if (selectedValue === 'name') {
+        name = searchValue;
+    } else if (selectedValue === 'color') {
+        color = searchValue;
+    } else if (selectedValue === 'status') {
+        status = searchValue;
+    } else if (selectedValue === 'created_at') {
+        created_at = searchValue;
+    }
+
+    loadPage(pageNumber, sizeValue, name, color, status, created_at, selectedValueOrderBy);
         });
 
 
@@ -366,7 +385,7 @@
     var name = "";
     var color = "";
     var status = "";
-    var date = "";
+    var created_at = "";
 
     if (selectedValue === 'name') {
         name = searchValue;
@@ -374,11 +393,11 @@
         color = searchValue;
     } else if (selectedValue === 'status') {
         status = searchValue;
-    } else if (selectedValue === 'date') {
-        date = searchValue;
+    } else if (selectedValue === 'created_at') {
+        created_at = searchValue;
     }
 
-    loadPage(pageNumber, sizeValue, name, color, status, date, selectedValueOrderBy);
+    loadPage(pageNumber, sizeValue, name, color, status, created_at, selectedValueOrderBy);
 });
 
 

@@ -27,6 +27,13 @@ import org.springframework.web.client.RestTemplate;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private static final String[] AUTH_WHITELIST = {
+            // -- swagger ui
+            "/v2/api-docs",
+            "/v3/api-docs",
+            "/swagger-resources/**",
+            "/swagger-ui/**",
+    };
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -66,6 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable() // Disable CSRF for simplicity, configure properly for production
                 .authorizeRequests()
+                .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers("/api/auth/login").permitAll() // Allow login endpoint
                 .antMatchers("/ui").permitAll()
                 .antMatchers("/resources/**").permitAll()
